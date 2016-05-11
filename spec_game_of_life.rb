@@ -21,7 +21,7 @@ describe 'Game of life' do
           row.is_a?(Array).should be_true
           row.each do |col|
             col.is_a?(Cell).should be_true
-            end 
+            end
           end
         end
     end
@@ -30,5 +30,26 @@ describe 'Game of life' do
         it 'should create a new cell object' do
           subject.is_a?(Cell).should be_true
         end
+        it 'should respond to the proper methods'do
+        subject.should respond_to(:alive)
+        subject.should respond_to(:x)
+        subject.should respond_to(:y)
+      end
+      it 'should initialize properly' do
+        subject.alive.should be_false
+        subject.x.should == 0
+        subject.y.should == 0
+      end
+    end
+
+    context 'Rules' do
+
+      let!(:game){ Game.new }
+
+      context 'Rule 1: Any live cell with fewer than two live neighbours dies, as if caused by under-population.' do
+        it 'should kill a live cell if one live neighbor' do
+        end
+      end
+
     end
 end
