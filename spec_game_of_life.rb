@@ -117,8 +117,8 @@ describe 'Game of life' do
         it 'should kill a live cell if one live neighbor' do
           game = Game.new(world, [[1,0],[2,0]])
           game.tick!
-          world.cell_grid[1][0].should be_dead
-          world.cell_grid[2][0].should be_dead
+          world.cell_grid[1][1].should be_dead
+          world.cell_grid[2][1].should be_dead
         end
 
       end
