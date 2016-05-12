@@ -1,5 +1,14 @@
 #the basic file
 class Game
+  attr_accessor :world, :seeds
+  #seeds must contain smaller arrays
+  def initialize(world=World.new, seeds=[])
+    @world = World.new
+    @seeds = []
+    seeds.each do |seed|
+      world.cell_grid[seed[0]][seed[1]].alive = true
+    end
+  end
 end
 
 class World
@@ -9,9 +18,9 @@ class World
     @rows = rows
     @cols = cols
 
-    #[[Cell.new, nil, nil]
-    # [nil, nil, nil]
-    # [nil, nil, nil]]
+    #[[Cell.new, Cell.new, Cell.new]
+    # [Cell.new, Cell.new, Cell.new]
+    # [Cell.new, Cell.new, Cell.new]]
       @cell_grid = Array.new(rows) do |row|
                   Array.new(cols) do |col|
                     Cell.new(col, row)
@@ -27,5 +36,9 @@ class Cell
     @alive = false
     @x = x
     @y = y
+  end
+
+  def alive?
+    alive
   end
 end
