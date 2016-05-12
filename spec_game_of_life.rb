@@ -4,6 +4,7 @@ require_relative 'game_of_life.rb'
 
 describe 'Game of life' do
   let!(:world){World.new}
+  let!(:cell){Cell.new(1,1)}
 
   context 'World' do
     subject {World.new}
@@ -14,6 +15,8 @@ describe 'Game of life' do
         subject.should respond_to(:rows)
         subject.should respond_to(:cols)
         subject.should respond_to(:cell_grid)
+        subject.should respond_to(:live_neighbours_around_cell)
+        subject.should respond_to(:cells)
       end
 
       it 'should create proper cell grid on initialization' do
@@ -26,6 +29,44 @@ describe 'Game of life' do
             end
           end
         end
+
+      it 'should add all cells to cells array' do
+        subject.cells.count.should == 9
+      end
+
+    it 'Detects live neighbour to the north' do
+      subject.cell_grid[cell.y - 1][cell.x].alive = true
+      subject.live_neighbours_around_cell(cell).count.should == 1
+    end
+    it 'Detects live neighbour to the north-east' do
+      subject.cell_grid[cell.y - 1][cell.x + 1].alive = true
+      subject.live_neighbours_around_cell(cell).count.should == 1
+    end
+    it 'Detects live neighbour to the east' do
+      subject.cell_grid[cell.y][cell.x + 1].alive = true
+      subject.live_neighbours_around_cell(cell).count.should == 1
+    end
+    it 'Detects live neighbour to the south-east' do
+      subject.cell_grid[cell.y + 1][cell.x + 1].alive = true
+      subject.live_neighbours_around_cell(cell).count.should == 1
+    end
+    it 'Detects live neighbour to the south' do
+      subject.cell_grid[cell.y + 1][cell.x].alive = true
+      subject.live_neighbours_around_cell(cell).count.should == 1
+    end
+    it 'Detects live neighbour to the south-west' do
+      subject.cell_grid[cell.y + 1][cell.x - 1].alive = true
+      subject.live_neighbours_around_cell(cell).count.should == 1
+    end
+    it 'Detects live neighbour to the west' do
+      subject.cell_grid[cell.y][cell.x - 1].alive = true
+      subject.live_neighbours_around_cell(cell).count.should == 1
+    end
+    it 'Detects live neighbour to the north-west' do
+      subject.cell_grid[cell.y - 1][cell.x - 1].alive = true
+      subject.live_neighbours_around_cell(cell).count.should == 1
+    end
+
     end
     context 'Cell' do
       subject {Cell.new}
@@ -37,7 +78,7 @@ describe 'Game of life' do
         subject.should respond_to(:x)
         subject.should respond_to(:y)
         subject.should respond_to(:alive?)
-
+        subject.should respond_to(:die!)
       end
       it 'should initialize properly' do
         subject.alive.should be_false
@@ -74,8 +115,12 @@ describe 'Game of life' do
 
       context 'Rule 1: Any live cell with fewer than two live neighbours dies, as if caused by under-population.' do
         it 'should kill a live cell if one live neighbor' do
+          game = Game.new(world, [[1,0],[2,0]])
+          game.tick!
+          world.cell_grid[1][0].should be_dead
+          world.cell_grid[2][0].should be_dead
         end
-      end
 
+      end
     end
 end
