@@ -23,7 +23,7 @@ class Game
     end
   end
 end
-#testing 
+
 class World
   attr_accessor :rows, :cols, :cell_grid, :cells
 
